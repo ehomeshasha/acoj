@@ -3,77 +3,37 @@
 using namespace std;
 int main()
 {
-
-    /**
-     * 学校里有一个水房，水房里一共装有m 个龙头可供同学们打开水，每个龙头每秒钟的供水量相等，均为1。
-     * 现在有n 名同学准备接水，他们的初始接水顺序已经确定。将这些同学按接水顺序从1到n 编号，i 号同学的接水量为wi。
-     * 接水开始时，1 到m 号同学各占一个水龙头，并同时打开水龙头接水。
-     * 当其中某名同学j 完成其接水量要求wj 后，下一名排队等候接水的同学k马上接替j 同学的位置开始接水。
-     * 这个换人的过程是瞬间完成的，且没有任何水的浪费。即j 同学第x 秒结束时完成接水，则k 同学第x+1 秒立刻开始接水。
-     * 若当前接水人数n’不足m，则只有n’个龙头供水，其它m−n’个龙头关闭。
-     * 现在给出n 名同学的接水量，按照上述接水规则，问所有同学都接完水需要多少秒。
-     *
-     *
-     * 1 <= n <= 10000 人数
-     * 1 <= m <= 100 水龙头数
-     * m <= n 一开始水龙头就是满的，直至接到剩余人数少于m人， 会出现空水龙头的情况
-     *
-     * 水龙头
-     * 1 2 3
-     * 4 4 1 第0秒
-     * 3 3 0瞬间换成2 第1秒
-     * 2 2 1 第2秒
-     * 1 1 0瞬间换成1 第3秒
-     * 0 0 0 第4秒
-     *
-     * 1  2  3  4
-     * 23 71 87 32 第0秒
-     * 0瞬间换成70  71-23 87-23 32-23 第23秒
-     *
-     */
-
-    int n, m;
-    cin >> n >> m;
-    int a[10000];
-    int b[100];
-    int add_index = m; // 补位的index值
-    int close_m = 0;
-    for (int i = 0; i < n; i++) {
-        int water;
-        cin >> water;
-        a[i] = water;
+    int x;
+    cin >> x;
+    int abs_x = x;
+    int is_negative = false;
+    if (x < 0) {
+        is_negative = true;
+        abs_x = -x;
     }
 
-    // 初始化水龙头， 由于 m <= n 所以b数组一定会被填满
-    for (int i = 0; i < m; i++) {
-        b[i] = a[i];
+    if (is_negative) {
+        cout << "-";
     }
 
-    for (int i = 1;; i++) {
-        // 每一秒过去， m个水龙头的水挨个减少
-        for (int j = 0; j < m; j++) {
-            if (b[j] == -1) {
+    bool start_zero = true;
+
+    for (int i = 1;; i *= 10) {
+        if (i > abs_x) {
+            break;
+        }
+        int sw = abs_x % (i * 10) / i;
+        if (sw != 0) {
+            start_zero = false;
+        } else {
+            if (start_zero) {
                 continue;
             }
-            b[j]--;
-            if (b[j] == 0) {
-                // 说明当前同学接完了， 下个同学需要立马补位
-                // 先判断数组是否越界， 如果越界说明没有下一名同学补位了
-                if (add_index >= n) {
-                    b[j] = -1; // 水龙头关掉
-                    close_m++; // 关闭的水龙头+1
-                } else {
-                    b[j] = a[add_index]; // 补位同学水量马上跟上
-                    add_index++; // 下个补位同学准备
-                }
-            }
         }
-        if (close_m == m) {
-            // 如果水龙头都关闭，那么返回秒数
-            cout << i << endl;
-            return 0;
-        }
+        cout << sw;
     }
+
+    cout << endl;
 
     return 0;
 }

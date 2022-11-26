@@ -5,9 +5,7 @@ int main()
 {
     int x;
     cin >> x;
-    int i = 1;
     bool stop = false;
-    int tmp;
     int j;
     int abs_x = x;
     int is_negative = false;
@@ -15,15 +13,13 @@ int main()
         is_negative = true;
         abs_x = -x;
     }
-    int n[10] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
-    while(!stop) {
-        tmp = abs_x % (i * 10) / i;
-        if (tmp == 0 && i * 10 > abs_x) {
-            stop = true;
-            continue;
+    int n[10] = {0};
+    for (int i = 1;; i *= 10) {
+        if (i > abs_x) {
+            break;
         }
-        n[j] = tmp;
-        i = i * 10;
+        int sw = abs_x % (i * 10) / i;
+        n[j] = sw;
         j++;
     }
 

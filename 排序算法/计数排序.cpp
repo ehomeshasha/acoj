@@ -1,7 +1,7 @@
 #include <iostream>
 #include <climits>
 
-int* countingSort(int *input_arr, int len) {
+int* countingSort(const int *input_arr, int len) {
     // 计算最大值最小值
     int max = 0;
     int min = INT_MAX;
@@ -23,14 +23,15 @@ int* countingSort(int *input_arr, int len) {
 
     // 升序排序
     int ii = 0;
+    int *result_arr = new int[len];
     for (int i = 0; i < max-min+1; i++) {
         while(count_arr[i] > 0) {
-            input_arr[ii] = i+min;
+            result_arr[ii] = i+min;
             ii++;
             count_arr[i]--;
         }
     }
-    return input_arr;
+    return result_arr;
 
 }
 

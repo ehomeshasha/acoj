@@ -1,5 +1,4 @@
 #include <iostream>
-#include <climits>
 
 int* bubbleSort(int *input_arr, int len) {
     int tmp;
@@ -28,7 +27,8 @@ int main()
      * 第一层对比n-1次， 相邻元素进行对比， 如果排序不符则进行互换
      * 第二层对比n-2次，以此类推，一直到最后一层对比1次
 
-     适用范围： 任意数据类型、数据不多、时间复杂度O(n)~O(n^2)
+     适用范围： 任意数据类型、数据不多
+     时间复杂度： O(n)~O(n^2)
      */
 
     int a[10] = {50, 0, 58, 22, 84, 199, 20, 89, 9, 100};

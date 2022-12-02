@@ -56,14 +56,15 @@ int* bucketSort(int *input_arr, int len) {
 
     // 再对n个桶里面的元素进行比较排序
     int index = 0;
+    int* result_arr = new int[len];
     for (int i = 1; i <= BUCKET_NUM; i++) {
         int* sorted_arr = bubbleSort(buckets[i].arr, buckets[i].len);
         for (int j = 0; j < buckets[i].len; j++) {
-            input_arr[index++] = sorted_arr[j];
+            result_arr[index++] = sorted_arr[j];
         }
     }
 
-    return input_arr;
+    return result_arr;
 
 }
 
@@ -80,7 +81,7 @@ int main()
         适用范围：数要相对均匀分布，桶的个数也要合理设计。
         需要知道输入数据的上界和下界，看看数据的分布情况，再考虑是否用桶排序
         时间复杂度： 假设桶内排序算法为快速排序，n为元素个数，m为桶个数
-        n (log n-log m)
+        O(n (log n-log m))
      */
 
     int a[10] = {50, 0, -58, 22, 84, 199, 20, -89, -9, 100};

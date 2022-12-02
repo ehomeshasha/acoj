@@ -66,7 +66,7 @@ void radixSort(int data[], int n, int asc) //基数排序
         // tmp[9] = 9
         // count[9] = 9
         for (j = n - 1; j >= 0; j--) { //将所有桶中记录依次收集到tmp中
-
+            // 为什么倒序填充， 基于堆栈思想， count++是压入从0到n-1，因此count--就是弹出从n-1到0
             k = (data[j] / radix) % 10;
             tmp[count[k] - 1] = data[j];
             count[k]--;
@@ -107,7 +107,7 @@ int main() {
         时间复杂度： O(n)
      */
 
-    int a[12] = {50, 1, 58, -22, -84, 199, 0, 89, 9, 100, -42, -62};
+    int a[10] = {50, 1, 58, -22, -84, 199, 0, 89, 9, 100};
     int len = sizeof(a) / sizeof(a[0]);
     int* negative_count_arr = new int[len];
     int* positive_count_arr = new int[len];

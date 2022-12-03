@@ -1,95 +1,68 @@
 #include <iostream>
 
-// ------------------ 网上算法 start ----------------- //
-
-int calSwCount(int data[], int n) //辅助函数，求数据的最大位数
-{
-    int maxData = data[0];              ///< 最大数
-    /// 先求出最大数，再求其位数，这样有原先依次每个数判断其位数，稍微优化点。
-    for (int i = 1; i < n; ++i) {
-        if (maxData < data[i])
-            maxData = data[i];
+int maxbit(int* a, int len) {
+    // 先找最大的数
+    int max = a[0];
+    for (int i = 1; i < len; i++) {
+        if (a[i] > max) {
+            max = a[i];
+        }
     }
+
+    // 然后对最大的数求位数d
     int d = 1;
-    int p = 10;
-    while (maxData >= p) {
-        //p *= 10; // Maybe overflow
-        maxData /= 10;
-        ++d;
+    for (int i = 0;; i++) {
+        max /= 10;
+        if (max == 0) {
+            break;
+        }
+        d++;
     }
     return d;
 }
 
-
-void radixSort(int data[], int n, int asc) //基数排序
-{
-    int sw_count = calSwCount(data, n);
-    int *tmp = new int[n];
-    int *count = new int[10]; //计数器
-    int i, j, k;
-    int radix = 1;
-    for (i = 1; i <= sw_count; i++) //进行d次排序
-    {
-        for (j = 0; j < 10; j++)
-            count[j] = 0; //每次分配前清空计数器
-        for (j = 0; j < n; j++) {
-            k = (data[j] / radix) % 10; //统计每个桶中的记录数
-            count[k]++;
+void radixSort(int* a, int n) {
+    int d = maxbit(a, n);
+    int count[10]; // 创建计数数组
+    int* tmp = new int[n]; // 创建tmp数组
+    int radix = 1; // 位数初始为1
+    for (int i = 1; i <= d; i++) { // 从个位数开始遍历每个位数， 每个位数进行计数排序， 然后回填到原数组
+        // 个位数
+        for (int j = 0; j < 10; j++) { // 初始化计数数组
+            count[j] = 0;
+        }
+        for (int j = 0; j < n; j++) { // 遍历每个数， 分离数位
+            int sw = a[j] / radix % 10;
+            count[sw]++;
         }
 
-        if (asc == 1) {
-            // 50, 1, 58, 22, 84, 199, 20, 89, 9, 100
-            // 0, 1, 8, 2, 4, 9, 0, 9, 9, 0
-            // count[0] = 3, count[1] = 1, count[2] = 1, count[4] = 1, count[8] = 1, count[9] = 3
-            // count[0] = 3, count[1] = 4, count[2] = 5, count[3] = 5, count[4] = 6, count[5] = 6, count[6] = [6], count[7] = 6, count[8] = 7, count[9] = 10
-
-            for (j = 1; j < 10; j++)
-                count[j] = count[j - 1] + count[j]; //将tmp中的位置依次分配给每个桶
-        } else {
-            // 50, 1, 58, 22, 84, 199, 20, 89, 9, 100
-            // 0, 1, 8, 2, 4, 9, 0, 9, 9, 0
-            // count[0] = 3, count[1] = 1, count[2] = 1, count[4] = 1, count[8] = 1, count[9] = 3
-            // count[0] = 10, count[1] = 7, count[2] = 6, count[3] = 5, count[4] = 5, count[5] = 4, count[6] = 4, count[7] = 4, count[8] = 4, count[9] = 3
-            for (j = 9; j >= 1; j--)
-                count[j-1] = count[j-1] + count[j]; //将tmp中的位置倒序分配给每个桶
+        // 精髓来了， 因为++有累计， 所以要用空间打平， 也就是说需要构建一个tmp数组，将打平后的有序结果保存， ++类似压入， 回填的时候需要反着来， 先取n-1
+        // 1. count数组按照值进行打平
+        for (int j = 1; j < 10; j++) {
+            count[j] = count[j] + count[j-1]; // 把值就转换成了打平的初始index
+            // count[0] = 1, count[1] = 2, count[3] = 2, count[4] = 5
+        }
+        // 从后往前回填
+        for (int j = n - 1; j >= 0; j--) {
+            int sw = a[j] / radix % 10;
+            int index = count[sw] - 1; // 回填索引开始值为count[sw]-1
+            tmp[index] = a[j];
+            // 最后一步把count--，取相同数位的第二个数
+            count[sw]--;
         }
 
-        // number = 100
-        // k = 0;
-        // count[0] = 3
-        // tmp[2] = 100
-        // count[0] = 2
-
-        // number = 9
-        // k = 9
-        // count[9] = 10
-        // tmp[9] = 9
-        // count[9] = 9
-        for (j = n - 1; j >= 0; j--) { //将所有桶中记录依次收集到tmp中
-
-            k = (data[j] / radix) % 10;
-            tmp[count[k] - 1] = data[j];
-            count[k]--;
+        // tmp数组即为针对数位i排序好的临时数组，回填到原数组里面，保留稳定性
+        for (int j = 0; j < n; j++) {
+            a[j] = tmp[j];
         }
 
-        for (j = 0; j < n; j++) //将临时数组的内容复制到data中
-            data[j] = tmp[j];
+        // radix基数x10
         radix = radix * 10;
     }
-    delete[]tmp;
-    delete[]count;
+
+    // 释放内存
+    delete[] tmp;
 }
-
-
-// ------------------ 网上算法 end ----------------- //
-
-
-
-
-
-
-
-
 
 
 
@@ -107,44 +80,13 @@ int main() {
         时间复杂度： O(n)
      */
 
-    int a[12] = {50, 1, 58, -22, -84, 199, 0, 89, 9, 100, -42, -62};
+    int a[10] = {50, 1, 58, 22, 84, 199, 20, 89, 9, 100};
     int len = sizeof(a) / sizeof(a[0]);
-    int* negative_count_arr = new int[len];
-    int* positive_count_arr = new int[len];
+    radixSort(a, len);
 
-    // 拆分成0、正数、负数
-    int zero_count = 0;
-    int negative_count = 0;
-    int positive_count = 0;
     for (int i = 0; i < len; i++) {
-        if (a[i] == 0) {
-            zero_count++;
-        } else if (a[i] < 0) {
-            negative_count_arr[negative_count] = -a[i];
-            negative_count++;
-        } else if (a[i] > 0) {
-            positive_count_arr[positive_count] = a[i];
-            positive_count++;
-        }
+        cout << a[i] << " ";
     }
-
-    // 排序负数数组
-    radixSort(negative_count_arr, negative_count, 0);
-
-    // 排序正数数组
-    radixSort(positive_count_arr, positive_count, 1);
-
-    // 拼接最终结果
-    for (int i = 0; i < negative_count; i++) {
-        cout << -negative_count_arr[i] << " ";
-    }
-    for (int i = 0; i < zero_count; i++) {
-        cout << 0 << " ";
-    }
-    for (int i = 0; i < positive_count; i++) {
-        cout << positive_count_arr[i] << " ";
-    }
-
     cout << endl;
 
     return 0;

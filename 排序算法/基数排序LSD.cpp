@@ -1,169 +1,68 @@
 #include <iostream>
 
-// ------------------ 自己写的旧算法 start ----------------- //
-
-int calRadixM1(int n) {
-    int radix = 1;
-    for (int i = 0; i < n; i++) {
-        radix *= 10;
-    }
-    return radix;
-}
-
-struct Radix {
-    int sw;
-    int number;
-};
-
-Radix *countingSortM1(Radix *input_arr, int len) {
-    // 只能0-9数字，就很简单， 但是需要用稳定排序？感觉不需要
-    // 另外有个难点是要将数字和关联
-    Radix *a[10] = {};
-    for (int i = 0; i < len; i++) {
-        int sw = input_arr[i].sw;
-        int number = input_arr[i].number;
-        for (int j = 0; j < len; j++) {
-            if (a[sw] == nullptr) {
-                a[sw] = new Radix[len];
-                a[sw][0] = Radix{sw, number};
-                break;
-            } else if (a[sw][j].number == 0) {
-                a[sw][j] = Radix{sw, number};
-                break;
-            }
+int maxbit(int* a, int len) {
+    // 先找最大的数
+    int max = a[0];
+    for (int i = 1; i < len; i++) {
+        if (a[i] > max) {
+            max = a[i];
         }
     }
 
-    int index = 0;
-    for (int i = 0; i < 10; i++) {
-        Radix *arr = a[i];
-        for (int j = 0; j < len; j++) {
-            if (arr == nullptr || arr[j].number == 0) {
-                break;
-            }
-            input_arr[index] = arr[j];
-            index++;
-        }
-    }
-    return input_arr;
-}
-
-
-int *radixSortM1(int *input_arr, int len, int sw_count) {
-    Radix *sw_arr = new Radix[len];
-    for (int i = 0; i < sw_count; i++) {
-        int radix = calRadixM1(i);
-        // 第i次依据数位排序
-        for (int j = 0; j < len; j++) {
-            if (i == 0) {
-                int number = input_arr[j];
-                int sw = number % (10 * radix) / radix;
-                sw_arr[j] = {sw, number};
-            } else {
-                // 稳定性排序
-                int number = sw_arr[j].number;
-                int sw = number % (10 * radix) / radix;
-                sw_arr[j].sw = sw;
-            }
-        }
-
-        // 排序该数位的数字
-        sw_arr = countingSortM1(sw_arr, len);
-    }
-
-    // 排序完毕后输入到原数组
-    for (int i = 0; i < len; i++) {
-        input_arr[i] = sw_arr[i].number;
-    }
-    return input_arr;
-}
-
-
-
-// ------------------ 自己写的旧算法 end ----------------- //
-
-
-
-// ------------------ 网上算法 start ----------------- //
-
-int maxbitW1(int data[], int n) //辅助函数，求数据的最大位数
-{
-    int maxData = data[0];              ///< 最大数
-    /// 先求出最大数，再求其位数，这样有原先依次每个数判断其位数，稍微优化点。
-    for (int i = 1; i < n; ++i) {
-        if (maxData < data[i])
-            maxData = data[i];
-    }
+    // 然后对最大的数求位数d
     int d = 1;
-    int p = 10;
-    while (maxData >= p) {
-        //p *= 10; // Maybe overflow
-        maxData /= 10;
-        ++d;
+    for (int i = 0;; i++) {
+        max /= 10;
+        if (max == 0) {
+            break;
+        }
+        d++;
     }
     return d;
 }
 
-
-void radixsortW1(int data[], int n) //基数排序
-{
-    int d = maxbitW1(data, n);
-    int *tmp = new int[n];
-    int *count = new int[10]; //计数器
-    int i, j, k;
-    int radix = 1;
-    for (i = 1; i <= d; i++) //进行d次排序
-    {
-        for (j = 0; j < 10; j++)
-            count[j] = 0; //每次分配前清空计数器
-        for (j = 0; j < n; j++) {
-            k = (data[j] / radix) % 10; //统计每个桶中的记录数
-            count[k]++;
+void radixSort(int* a, int n) {
+    int d = maxbit(a, n);
+    int count[10]; // 创建计数数组
+    int* tmp = new int[n]; // 创建tmp数组
+    int radix = 1; // 位数初始为1
+    for (int i = 1; i <= d; i++) { // 从个位数开始遍历每个位数， 每个位数进行计数排序， 然后回填到原数组
+        // 个位数
+        for (int j = 0; j < 10; j++) { // 初始化计数数组
+            count[j] = 0;
         }
-        // 50, 1, 58, 22, 84, 199, 20, 89, 9, 100
-        // 0, 1, 8, 2, 4, 9, 0, 9, 9, 0
-        // count[0] = 3, count[1] = 1, count[2] = 1, count[4] = 1, count[8] = 1, count[9] = 3
-        // count[0] = 3, count[1] = 4, count[2] = 5, count[3] = 5, count[4] = 6, count[5] = 6, count[6] = [6], count[7] = 6, count[8] = 7, count[9] = 10
-
-
-        for (j = 1; j < 10; j++)
-            count[j] = count[j - 1] + count[j]; //将tmp中的位置依次分配给每个桶
-
-        // number = 100
-        // k = 0;
-        // count[0] = 3
-        // tmp[2] = 100
-        // count[0] = 2
-
-        // number = 9
-        // k = 9
-        // count[9] = 10
-        // tmp[9] = 9
-        // count[9] = 9
-        for (j = n - 1; j >= 0; j--) //将所有桶中记录依次收集到tmp中
-        {
-            k = (data[j] / radix) % 10;
-            tmp[count[k] - 1] = data[j];
-            count[k]--;
+        for (int j = 0; j < n; j++) { // 遍历每个数， 分离数位
+            int sw = a[j] / radix % 10;
+            count[sw]++;
         }
-        for (j = 0; j < n; j++) //将临时数组的内容复制到data中
-            data[j] = tmp[j];
+
+        // 精髓来了， 因为++有累计， 所以要用空间打平， 也就是说需要构建一个tmp数组，将打平后的有序结果保存， ++类似压入， 回填的时候需要反着来， 先取n-1
+        // 1. count数组按照值进行打平
+        for (int j = 1; j < 10; j++) {
+            count[j] = count[j] + count[j-1]; // 把值就转换成了打平的初始index
+            // count[0] = 1, count[1] = 2, count[3] = 2, count[4] = 5
+        }
+        // 从后往前回填
+        for (int j = n - 1; j >= 0; j--) {
+            int sw = a[j] / radix % 10;
+            int index = count[sw] - 1; // 回填索引开始值为count[sw]-1
+            tmp[index] = a[j];
+            // 最后一步把count--，取相同数位的第二个数
+            count[sw]--;
+        }
+
+        // tmp数组即为针对数位i排序好的临时数组，回填到原数组里面，保留稳定性
+        for (int j = 0; j < n; j++) {
+            a[j] = tmp[j];
+        }
+
+        // radix基数x10
         radix = radix * 10;
     }
-    delete[]tmp;
-    delete[]count;
+
+    // 释放内存
+    delete[] tmp;
 }
-
-
-// ------------------ 网上算法 end ----------------- //
-
-
-
-
-
-
-
-
 
 
 
@@ -183,7 +82,7 @@ int main() {
 
     int a[10] = {50, 1, 58, 22, 84, 199, 20, 89, 9, 100};
     int len = sizeof(a) / sizeof(a[0]);
-    radixsortW1(a, len);
+    radixSort(a, len);
 
     for (int i = 0; i < len; i++) {
         cout << a[i] << " ";

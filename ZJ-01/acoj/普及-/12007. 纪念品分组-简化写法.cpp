@@ -77,15 +77,7 @@ int main()
 
 
     int match_count = 0;
-    int min_value = a[0];
-    int max_index = 0;
-    for (int i = n - 1; i >= 0; i--) { // 从后往前遍历， 如果存在能够<=w的， 表明能够接受的最大index值
-        if (min_value + a[i] <= w) {
-            max_index = i;
-            break;
-        }
-    }
-
+    int max_index = n - 1;
     for (int i = 0; i < max_index; i++) {
         for (int j = max_index; j >=0; j--) {
             if (i < j && a[i]+a[j] <= w) {

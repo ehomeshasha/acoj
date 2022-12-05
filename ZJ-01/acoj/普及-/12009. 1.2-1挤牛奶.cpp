@@ -36,14 +36,14 @@ USACO Training
 900 300
  */
 
-// 按照开始时间升序排序 0<=x<1000000
-// 要记得处理0
+// 按照开始时间升序排序 0<=x<1000000，即自然数
 void radixSort(int (*a)[3], int N, int sort_index) {
     // 最大位数
     int maxbit = 6;
     int radix = 1;
     int count[10] = {0}; // 计数排序，十进制 0-9
     int (*tmp)[2] = new int[N][2];
+
     for (int i = 0; i < maxbit; i++) {
         // 初始化count
         for (int j = 0; j < 10; j++) {

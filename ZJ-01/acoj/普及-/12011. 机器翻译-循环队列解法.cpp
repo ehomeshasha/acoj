@@ -50,84 +50,74 @@ noip2010提高组复赛
 共计查了5次词典。
  */
 
-
-
-struct Node {
-    int data;
-    struct Node* next;
+struct Queue {
+    int* a;
+    int head;
+    int tail;
 };
-Node* front = nullptr;
-Node* rear = nullptr;
-int realSize = 0;
-// To Enqueue an integer
-void enQueue(int number) {
-    Node* temp = new Node{number, nullptr};
-    realSize++;
-    if(front == nullptr && rear == nullptr){
-        front = temp;
-        rear = temp;
 
-        return;
-    }
-    rear->next = temp;
-    rear = temp;
+Queue constructQueue(int n) {
+    int* a = new int[n];
+    return {a, 0, 0};
 }
 
-// To Dequeue an integer.
-void deQueue() {
-    if(front == nullptr) {
-        printf("Queue is Empty\n");
-        return;
-    }
-    realSize--;
-    if(front == rear) {
-        front = rear = nullptr;
-    } else {
-        front = front->next;
-    }
+bool isEmpty(Queue q) {
+    return q.head == q.tail;
 }
 
+bool isFull(Queue q, int M) {
+    return (q.tail+1)%M == q.head;
+}
 
-// 需要递归寻找， 如果有匹配的则跳出递归否则一直递归寻找到最后一个
-bool isFind(Node* node, int number) {
-    if (node == nullptr) {
-        return false;
-    }
-    // 判断是否匹配
-    if (node->data == number) {
-        return true;
-    }
+int getSize(Queue q, int M) {
+    return (q.tail-q.head+M)%M;
+}
 
-    // 如果不匹配且下个节点不为空， 继续判断
-    if (node->next != nullptr) {
-        return isFind(node->next, number);
+bool isFind(Queue &q, int M, int number) {
+    for (int j = 0; j < M; j++) {
+        if (q.a[j] == number) {
+            return true;
+        }
     }
     return false;
 }
 
+int deQueue(Queue &q, int M) {
+    int number = q.a[q.head];
+    q.a[q.head] = -1;
+    q.head = (q.head+1)%M;
+    return number;
+}
 
-
-
+void enQueue(Queue &q, int M, int number) {
+    if (isFull(q, M)) {
+        q.head = (q.head+1)%M;
+    }
+    q.tail = (q.tail+1)%M;
+    q.a[q.tail] = number;
+}
 
 int main()
 {
     int M, N;
     cin >> M >> N; // 0<=M<=100，0<=N<=1000。
+    Queue q = constructQueue(M);
     int search_count = 0;
+
+    // 初始化数组
+    for (int i = 0; i < M; i++) {
+        q.a[i] = -1;
+    }
+
     for (int i = 0; i < N; i++) {
         int input;
         cin >> input;
-        bool is_find = isFind(front, input);
+        bool is_find = isFind(q, M, input);
 
         if (!is_find) {
             search_count++;
-            if (realSize == M) { //满了的话先deQueue，再enQueue
-                deQueue();
-            }
-            enQueue(input);
+            enQueue(q, M, input);
         }
-
-
     }
     cout << search_count << endl;
 

@@ -39,45 +39,35 @@ O
 6 1
  */
 
-struct Node {
-    int data;
-    Node* next;
+struct Queue {
+    int* data;
+    int front;
+    int rear;
+    int capacity;
 };
 
-struct LinkedList {
-    Node* front;
-    Node* rear;
-    int realSize;
-};
-
-
-
-bool isEmpty(LinkedList& list) {
-    return list.front == nullptr && list.rear == nullptr;
+bool isEmpty(Queue q) {
+    return q.front == q.rear;
 }
 
-void enQueue(LinkedList& list, int value) {
-    Node* node = new Node{value, nullptr};
-    if (isEmpty(list)) {
-        list.front = list.rear = node;
-    } else {
-        list.rear->next = node;
-        list.rear = node;
+bool isFull(Queue q) {
+    return (q.rear+1+q.capacity)%q.capacity == q.front;
+}
+
+void enQueue(Queue &q, int value) {
+    if (isFull(q)) {
+        q.front = (q.front+1)%q.capacity;
     }
-    list.realSize++;
+    q.data[q.rear] = value;
+    q.rear = (q.rear+1)%q.capacity;
 }
 
-int deQueue(LinkedList& list) {
-    if (list.front == nullptr) {
+int deQueue(Queue &q) {
+    if (isEmpty(q)) {
         return -1;
     }
-    int res = list.front->data;
-    if(list.front == list.rear) {
-        list.front = list.rear = nullptr;
-    } else {
-        list.front = list.front->next;
-    }
-    list.realSize--;
+    int res = q.data[q.front];
+    q.front = (q.front+1)%q.capacity;
     return res;
 }
 
@@ -87,26 +77,32 @@ int main()
 {
     int n;
     cin >> n;
-    LinkedList list = {nullptr, nullptr, 0};
+    int capacity = 200000;
+    int* a = new int(capacity);
+    Queue q = {a, 0, 0, capacity};
     for (int i = 0; i < n; i++) {
         char op;
         cin >> op;
         if (op == 'I') {
             int val;
             cin >> val;
-            enQueue(list, val);
+            enQueue(q, val);
         } else if (op == 'O') {
-            deQueue(list);
+            deQueue(q);
         }
     }
 
-    Node* node = list.front;
-    for (int i = 0;;i++) {
-        if (node == nullptr) {
-            break;
-        }
-        cout << node->data << " ";
-        node = node->next;
+//     遍历队列
+//    for (int i = 0;;i++) {
+//        if (isEmpty(q)) {
+//            break;
+//        }
+//        cout << deQueue(q) << " ";
+//    }
+
+    for (int i = q.front;i%q.capacity!=q.rear; i++) {
+        int output = q.data[i%q.capacity];
+        cout << output << " ";
     }
 
     cout << endl;

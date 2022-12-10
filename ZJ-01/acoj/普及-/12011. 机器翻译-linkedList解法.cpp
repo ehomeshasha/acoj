@@ -66,7 +66,6 @@ void enQueue(int number) {
     if(front == nullptr && rear == nullptr){
         front = temp;
         rear = temp;
-
         return;
     }
     rear->next = temp;

@@ -49,65 +49,80 @@ noip2010提高组复赛
 7． 5 4 1：查找单词1并调入内存替代单词2。
 共计查了5次词典。
  */
-
-struct Queue {
-    int* a;
-    int head;
-    int tail;
+struct Node {
+    int data;
+    Node* next;
 };
 
-Queue constructQueue(int n) {
-    int* a = new int[n];
-    return {a, 0, 0};
+struct SingleLinkedList {
+    Node* front;
+    Node* rear;
+    int realSize;
+    int maxSize;
+};
+
+bool isEmpty(SingleLinkedList &list) {
+    return list.front == nullptr;
 }
 
-int getSize(Queue q) {
-    return q.tail - q.head;
+int size(SingleLinkedList &list) {
+    return list.realSize;
 }
 
-bool isFind(Queue &q, int number) {
-    for (int j = q.head; j < q.tail; j++) {
-        if (q.a[j] == number) {
+int deQueue(SingleLinkedList &list) {
+    if (list.front == nullptr) {
+        return -123456789;
+    }
+    int value = list.front->data;
+    list.front = list.front->next;
+    list.realSize--;
+    return value;
+}
+
+void enQueue(SingleLinkedList &list, int value) {
+    Node* node = new Node{value, nullptr};
+    if (list.front == nullptr && list.rear == nullptr) {
+        list.front = list.rear = node;
+    } else {
+        if (list.realSize == list.maxSize) {
+            // 队列已经塞满， 运行deQueue， 然后再往后添加
+            deQueue(list);
+        }
+        list.rear->next = node;
+        list.rear = node;
+    }
+    list.realSize++;
+}
+
+bool isFind(SingleLinkedList &list, int value) {
+    Node* node = list.front;
+    while(node != nullptr) {
+        if (value == node->data) {
             return true;
         }
+        node = node->next;
     }
     return false;
-}
-
-int deQueue(Queue &q) {
-    int number = q.a[q.head];
-    q.head++;
-    return number;
-}
-
-void enQueue(Queue &q, int M, int number) {
-    int size = getSize(q);
-    if (size >= M) {
-        q.head++;
-    }
-    q.a[q.tail] = number;
-    q.tail++;
 }
 
 int main()
 {
     int M, N;
     cin >> M >> N; // 0<=M<=100，0<=N<=1000。
-    Queue q = constructQueue(N);
-    int search_count = 0;
+    SingleLinkedList list = {nullptr, nullptr, 0, M};
+    int cnt = 0;
 
     for (int i = 0; i < N; i++) {
-        int input;
-        cin >> input;
-
-        bool is_find = isFind(q, input);
-
-        if (!is_find) {
-            search_count++;
-            enQueue(q, M, input);
+        int value;
+        cin >> value;
+        // 先查找， 没有查找到计数+1
+        bool find = isFind(list, value);
+        if (!find) {
+            cnt++;
+            enQueue(list, value);
         }
     }
-    cout << search_count << endl;
+    cout << cnt << endl;
 
     return 0;
 }

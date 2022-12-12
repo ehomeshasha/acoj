@@ -50,76 +50,76 @@ noip2010提高组复赛
 共计查了5次词典。
  */
 
-struct Queue {
-    int* a;
-    int head;
-    int tail;
+/**
+循环数组解法
+ */
+struct CycleQueue {
+    int* data;
+    int front;
+    int rear;
+    int realSize;
+    int capacity;
 };
 
-Queue constructQueue(int n) {
-    int* a = new int[n];
-    return {a, 0, 0};
+bool isEmpty(CycleQueue &q) {
+    return q.front == q.rear;
 }
 
-bool isEmpty(Queue q) {
-    return q.head == q.tail;
+bool isFull(CycleQueue &q) {
+    return (q.rear+1)%q.capacity == q.front; // 循环队列牺牲一个空间， 满了之后rear+1==front
 }
 
-bool isFull(Queue q, int M) {
-    return (q.tail+1)%M == q.head;
+int deQueue(CycleQueue &q) {
+    if (isEmpty(q)) {
+        throw bad_exception(); // 已经空了
+    }
+    int value = q.data[q.front];
+    q.front = (q.front+1)%q.capacity;
+    q.realSize--;
+    return value;
 }
 
-int getSize(Queue q, int M) {
-    return (q.tail-q.head+M)%M;
+void enQueue(CycleQueue &q, int value) {
+    if (isFull(q)) {
+        throw bad_exception();
+    }
+    q.data[q.rear] = value;
+    q.rear = (q.rear+1)%q.capacity;
+    q.realSize++;
 }
 
-bool isFind(Queue &q, int M, int number) {
-    for (int j = 0; j < M; j++) {
-        if (q.a[j] == number) {
+bool isFind(CycleQueue &q, int value) {
+    for (int i = q.front; i!=q.rear; i=(i+1)%q.capacity) {
+        if (q.data[i] == value) {
             return true;
         }
     }
     return false;
 }
 
-int deQueue(Queue &q, int M) {
-    int number = q.a[q.head];
-    q.a[q.head] = -1;
-    q.head = (q.head+1)%M;
-    return number;
-}
 
-void enQueue(Queue &q, int M, int number) {
-    if (isFull(q, M)) {
-        q.head = (q.head+1)%M;
-    }
-    q.tail = (q.tail+1)%M;
-    q.a[q.tail] = number;
-}
 
 int main()
 {
     int M, N;
     cin >> M >> N; // 0<=M<=100，0<=N<=1000。
-    Queue q = constructQueue(M);
-    int search_count = 0;
-
-    // 初始化数组
-    for (int i = 0; i < M; i++) {
-        q.a[i] = -1;
-    }
+    int* data = new int[M+1];
+    CycleQueue queue = {data, 0, 0, 0, M+1};
+    int cnt = 0;
 
     for (int i = 0; i < N; i++) {
-        int input;
-        cin >> input;
-        bool is_find = isFind(q, M, input);
-
-        if (!is_find) {
-            search_count++;
-            enQueue(q, M, input);
+        int value;
+        cin >> value;
+        bool find = isFind(queue, value);
+        if (!find) {
+            cnt++;
+            if (isFull(queue)) {
+                deQueue(queue);
+            }
+            enQueue(queue, value);
         }
     }
-    cout << search_count << endl;
+    cout << cnt << endl;
 
     return 0;
 }

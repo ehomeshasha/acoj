@@ -2,9 +2,6 @@
 
 using namespace std;
 
-/**
-
- */
 struct Node {
     int data;
     Node* next;
@@ -24,6 +21,20 @@ int size(SingleLinkedList &list) {
     return list.realSize;
 }
 
+int deQueue(SingleLinkedList &list) {
+    if (isEmpty(list)) {
+        throw bad_exception();
+    }
+    int value = list.front->data;
+    if (list.front == list.rear) {
+        list.front = list.rear = nullptr;
+    } else {
+        list.front = list.front->next;
+    }
+    list.realSize--;
+    return value;
+}
+
 void enQueue(SingleLinkedList &list, int value) {
     Node* node = new Node{value, nullptr};
     if (list.front == nullptr && list.rear == nullptr) {
@@ -35,32 +46,15 @@ void enQueue(SingleLinkedList &list, int value) {
     list.realSize++;
 }
 
-int deQueue(SingleLinkedList &list) {
-    if (isEmpty(list)) {
-        return -123456789;
+bool isFind(SingleLinkedList &list, int value) {
+    Node* node = list.front;
+    while(node != nullptr) {
+        if (value == node->data) {
+            return true;
+        }
+        node = node->next;
     }
-    int value = list.front->data;
-    if (list.front == list.rear) {
-        // 只剩一个
-        list.front = list.rear = nullptr;
-    } else {
-        list.front = list.front->next;
-    }
-    list.realSize--;
-    return value;
-}
-
-int* toArray(SingleLinkedList &list) {
-    int* a = new int[list.realSize];
-    Node* currentNode = list.front;
-    int i = 0;
-    while(currentNode != nullptr) {
-        int data = currentNode->data;
-        currentNode = currentNode->next;
-        a[i] = data;
-        i++;
-    }
-    return a;
+    return false;
 }
 
 int main()
@@ -79,13 +73,17 @@ int main()
 
             enQueue(list, value);
         } else if (op == 'O') {
+            if (isEmpty(list)) {
+                continue;
+            }
             deQueue(list);
         }
     }
 
-    int* arr = toArray(list);
-    for (int i = 0; i < list.realSize; i++) {
-        cout << arr[i] << " ";
+    Node* node = list.front;
+    while(node != nullptr) {
+        cout << node->data << " ";
+        node = node->next;
     }
 
     cout << endl;

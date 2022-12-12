@@ -58,7 +58,6 @@ struct SingleLinkedList {
     Node* front;
     Node* rear;
     int realSize;
-    int maxSize;
 };
 
 bool isEmpty(SingleLinkedList &list) {
@@ -70,11 +69,15 @@ int size(SingleLinkedList &list) {
 }
 
 int deQueue(SingleLinkedList &list) {
-    if (list.front == nullptr) {
-        return -123456789;
+    if (isEmpty(list)) {
+        throw bad_exception();
     }
     int value = list.front->data;
-    list.front = list.front->next;
+    if (list.front == list.rear) {
+        list.front = list.rear = nullptr;
+    } else {
+        list.front = list.front->next;
+    }
     list.realSize--;
     return value;
 }
@@ -84,10 +87,6 @@ void enQueue(SingleLinkedList &list, int value) {
     if (list.front == nullptr && list.rear == nullptr) {
         list.front = list.rear = node;
     } else {
-        if (list.realSize == list.maxSize) {
-            // 队列已经塞满， 运行deQueue， 然后再往后添加
-            deQueue(list);
-        }
         list.rear->next = node;
         list.rear = node;
     }
@@ -109,7 +108,7 @@ int main()
 {
     int M, N;
     cin >> M >> N; // 0<=M<=100，0<=N<=1000。
-    SingleLinkedList list = {nullptr, nullptr, 0, M};
+    SingleLinkedList list = {nullptr, nullptr, 0};
     int cnt = 0;
 
     for (int i = 0; i < N; i++) {
@@ -119,6 +118,10 @@ int main()
         bool find = isFind(list, value);
         if (!find) {
             cnt++;
+            if (list.realSize == M) {
+                // 队列已经满了， 先出列
+                deQueue(list);
+            }
             enQueue(list, value);
         }
     }

@@ -116,9 +116,10 @@ int main()
 //                board_arr[j+1] = tmp;
 //            }
 //        }
-//    } i>=C-M-1
+//    }
     sort(board_arr+0, board_arr+C-1, descCompare);
 
+    // 从最大的板子开始去掉
     int board_cnt = 1;
     int board_min_len = data[C-1]-data[0]+1;
     for (int i = 0; i < C-1; i++) {

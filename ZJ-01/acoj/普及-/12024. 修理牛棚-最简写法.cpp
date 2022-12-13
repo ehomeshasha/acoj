@@ -1,12 +1,11 @@
 #include<cstdio>
-#include<cstring>
-#include<iostream>
 #include<algorithm>
-const int maxn=210;
+
 using namespace std;
+
 int main()
 {
-    int M,S,C,sum;
+    int M,S,C,sum=0,maxn=210;
     int a[maxn],cha[maxn];
     scanf("%d%d%d",&M,&S,&C);
     for(int i=1;i<=C;i++)

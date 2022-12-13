@@ -1,4 +1,9 @@
 #include <iostream>
+#include<algorithm>
+
+bool descCompare(int a, int b) {
+    return a > b;
+}
 
 using namespace std;
 
@@ -79,17 +84,18 @@ int main()
         data[i] = stall_number;
     }
 
+    sort(data+0, data+C);
     // 冒泡排序
-    int tmp;
-    for (int i = 0; i < C-1; i++) {
-        for (int j = 0; j < C-1-i; j++) {
-            if (data[j] > data[j+1]) {
-                tmp = data[j];
-                data[j] = data[j+1];
-                data[j+1] = tmp;
-            }
-        }
-    }
+//    int tmp;
+//    for (int i = 0; i < C-1; i++) {
+//        for (int j = 0; j < C-1-i; j++) {
+//            if (data[j] > data[j+1]) {
+//                tmp = data[j];
+//                data[j] = data[j+1];
+//                data[j+1] = tmp;
+//            }
+//        }
+//    }
 
     // 去掉首尾进行遍历
     // 0 1 2 3 4 5 6 7 8 9 10
@@ -102,15 +108,17 @@ int main()
     }
 
     // 从大往小排序board_arr
-    for (int i = 0; i < C-1-1; i++) {
-        for (int j = 0; j < C-1-1-i; j++) {
-            if (board_arr[j] < board_arr[j+1]) {
-                tmp = board_arr[j];
-                board_arr[j] = board_arr[j+1];
-                board_arr[j+1] = tmp;
-            }
-        }
-    }
+//    for (int i = 0; i < C-1-1; i++) {
+//        for (int j = 0; j < C-1-1-i; j++) {
+//            if (board_arr[j] < board_arr[j+1]) {
+//                tmp = board_arr[j];
+//                board_arr[j] = board_arr[j+1];
+//                board_arr[j+1] = tmp;
+//            }
+//        }
+//    } i>=C-M-1
+    sort(board_arr+0, board_arr+C-1, descCompare);
+
     int board_cnt = 1;
     int board_min_len = data[C-1]-data[0]+1;
     for (int i = 0; i < C-1; i++) {

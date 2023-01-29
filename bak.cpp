@@ -1,155 +1,104 @@
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
 /**
-小晨的电脑上安装了一个机器翻译软件，他经常用这个软件来翻译英语文章。
-这个翻译软件的原理很简单，它只是从头到尾，依次将每个英文单词用对应的中文含义来替换。
-对于每个英文单词，软件会先在内存中查找这个单词的中文含义，如果内存中有，软件就会用它进行翻译；
-如果内存中没有，软件就会在外存中的词典内查找，查出单词的中文含义然后翻译，并将这个单词和译义放入内存，以备后续的查找和翻译。
-假设内存中有M个单元，每单元能存放一个单词和译义。
-每当软件将一个新单词存入内存前，如果当前内存中已存入的单词数不超过M-1，软件会将新单词存入一个未使用的内存单元；
-若内存中已存入M个单词，软件会清空最早进入内存的那个单词，腾出单元来，存放新单词。
-假设一篇英语文章的长度为N个单词。给定这篇待译文章，翻译软件需要去外存查找多少次词典？假设在翻译开始前，内存中没有任何单词。
+某人想调查学校OI组每个同学的生日，并按照年龄从大到小的顺序排序。但近作业很多，没有时间，所以请你帮她排序。（1<n<100）
 
 输入格式:
 
-输入文件共2行。每行中两个数之间用一个空格隔开。
-第一行为两个正整数M和N，代表内存容量和文章的长度。
-第二行为N个非负整数，按照文章的顺序，每个数（大小不超过1000）代表一个英文单词。
-文章中两个单词是同一个单词，当且仅当它们对应的非负整数相同。
-
-
+有2行，
+第1行为OI组总人数n；
+第2行至第n+1行分别是每人的姓名s、出生年y、月m、日d。
 输出格式:
-包含一个整数，为软件需要查词典的次数。
-提示:
 
-noip2010提高组复赛
+有n行，
+即n个生日从大到小同学的姓名。如果同年同月同日生则按照姓名的字典序从大到小。
 限制:
 
-对于10%的数据有M=1，N≤5。
-对于100%的数据有0<=M<=100，0<=N<=1000。
-每个测试点1s
+1<n<100，length(s)<20
 样例 1 :
 
 输入:
-3 7
-1 2 1 5 4 4 1
+3
+Yangchu 1992 4 23
+Qiujingya 1993 10 13
+Luowen 1991 8 1
 输出:
-5
-说明:
-整个查字典过程如下：每行表示一个单词的翻译，冒号前为本次翻译后的内存状况：
-空：内存初始状态为空。
-1． 1：查找单词1并调入内存。
-2． 1 2：查找单词2并调入内存。
-3． 1 2：在内存中找到单词1。
-4． 1 2 5：查找单词5并调入内存。
-5． 2 5 4：查找单词4并调入内存替代单词1。
-6． 2 5 4：在内存中找到单词4。
-7． 5 4 1：查找单词1并调入内存替代单词2。
-共计查了5次词典。
+Luowen
+Yangchu
+Qiujingya
  */
-
-struct Queue {
-    int* a;
-    int head;
-    int tail;
-};
-
-Queue construct_queue(int n) {
-    int* a = new int[n];
-    return {a, 0, 0};
+int my_str_to_int(string s) {
+    int sum = 0;
+    int len = s.length();
+    int radix = 1;
+    for (int i = len-1; i >= 0; i--) {
+        sum+=radix*(s[i]-'0');
+        radix*=10;
+    }
+    return sum;
 }
 
-bool isFull(Queue q, int M) {
-    return (q.tail + 1) % M == q.head;
+int my_compare_str(string s1, string s2) {
+    int i1 = my_str_to_int(s1);
+    int i2 = my_str_to_int(s2);
+    return i1-i2;
 }
 
-int get_size(Queue q, int M) {
-    return (M+q.tail-q.head)%M;
-}
-
-bool find(Queue &q, int M, int number) {
-//    bool is_find = false;
-//    // 遍历循环队列
-//    for (int j = 0; j < M; j++) {
-//        if (q.a[j] == number) {
-//            is_find = true;
-//            break;
-//        }
+int my_compare(string* sr1, string* sr2) {
+//    if (sr1[1] > sr2[1]) {
+//        return 1;
 //    }
-    if (!isFull(q, M)) {
-        for (int j = 1; j < M; j++) {
-            if (q.a[j] == number) {
-                return true;
+    int res = my_compare_str(sr1[1], sr2[1]);
+    if (res == 0) {
+        res = my_compare_str(sr1[2], sr2[2]);
+        if (res == 0) {
+            res = my_compare_str(sr1[3], sr2[3]);
+            if (res == 0) {
+
             }
         }
     } else {
-        for (int j = 0; j < M; j++) {
-            if (q.a[j] == number) {
-                return true;
+        return res;
+    }
+
+
+    if (my_compare_str(sr1[1], sr2[1]) == 0) {
+        if (my_compare_str(sr1[2], sr2[2]) == 0) {
+            if (my_compare_str(sr1[3], sr2[3]) == 0) {
+
             }
         }
     }
-    return false;
 }
 
-int de_queue(Queue &q, int M) {
-    int number = q.a[q.head];
-    q.head = (q.head+1)%M;
-    return number;
-}
+int my_swap(string* sr1, string* sr2, string* tmp) {
 
-void en_queue(Queue &q, int M, int number) {
-    int size = get_size(q, M);
-    q.tail = (q.tail+1)%M;
-    q.a[q.tail] = number;
-
-    if (size >= M-1) {
-        q.head = (q.head+1)%M;
-    }
-//    if (size < M-1) {
-//        q.tail = (q.tail+1)%M; // M = 12,  tail=0 , 插入下标1
-//        // tail = 1， 插入下标2
-//        // tail = 10, 插入下标11
-//        // tail = 11, 插入下标 (M+q.tail-q.head)%M = 11, tail插入下标0， head插入下标1
-//        // tail = 12, 插入下标1，  (M+q.tail-q.head)%M = (12-1)%12=11，head插入下标2 1+1%12=2
-//        // tail = 13 ，插入下标2， head插入下标3
-//        q.a[q.tail] = number;
-//    } else {
-//        q.head = (q.head+1)%M;
-//        q.a[q.tail] = number;
-//        q.tail = (q.tail+1)%M;
-//    }
-
-
-//    if (size >= M) {
-//        q.head = (q.head+1)%M;
-//    }
-//    q.a[q.tail] = number;
-//    q.tail = (q.tail+1)%M;
 }
 
 int main()
 {
-    int M, N;
-    cin >> M >> N; // 0<=M<=100，0<=N<=1000。
-    Queue q = construct_queue(M+1);
-    int search_count = 0;
+    int n;
+    cin >> n;
+    string s[100][4];
+    string tmp[4];
+    for (int i = 0; i < n; i++)
+        cin >> s[i][0] >> s[i][1] >> s[i][2] >> s[i][3];
 
-    for (int i = 0; i < N; i++) {
-        int input;
-        cin >> input;
-
-        bool is_find = find(q, M, input);
-
-        if (!is_find) {
-            cout << input << endl;
-            search_count++;
-            en_queue(q, M, input);
-        }
-    }
-    cout << search_count << endl;
-
+    int test = my_str_to_int(s[0][1]);
+    cout << test << endl;
+//    for (int i = 0; i < n-1; i++) {
+//        for (int j = 0; j < n-1-i; j++) {
+//            if (my_compare(s[j], s[j+1]) > 0) {
+//                my_swap(s[j], s[j+1], tmp);
+//            }
+//        }
+//    }
+//
+//    for (int i = 0; i < n; i++) {
+//        cout << s[i][0] << endl;
+//    }
     return 0;
 }

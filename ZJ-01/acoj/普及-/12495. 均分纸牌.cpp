@@ -1,10 +1,4 @@
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <math.h>
-#include <algorithm>
-#include <vector>
-#include <map>
+#include <bits/stdc++.h>
 
 
 using namespace std;
@@ -38,6 +32,23 @@ using namespace std;
 
 int main()
 {
+    int N, a[105], sum=0, avg, cnt=0;
+    cin >> N;
+    for (int i=1;i<=N;i++) {
+        cin >> a[i];
+        sum+=a[i];
+    }
+    avg=sum/N;
+
+    for (int i=1;i<=N;i++) {
+        int cha=a[i]-avg;
+        if (cha!=0) {
+            a[i+1]+=cha;
+            a[i]-=cha;
+            cnt++;
+        }
+    }
+    cout << cnt << endl;
 
     return 0;
 }

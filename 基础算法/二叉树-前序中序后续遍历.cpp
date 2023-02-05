@@ -10,28 +10,76 @@
 using namespace std;
 
 /**
+二叉树
+输入
+ABD###CE##F##
 前序
- ABDHECF
+ABDCEF
 中序
- DHBEAFC
-求后序
- HDEBFCA
+DBAECF
+后序
+DBEFCA
  */
-void dfs(string preOrder,string inOrder) {
-    int len=preOrder.length();
-    if (len>0) {
-        char root=preOrder[0];
-        int k=inOrder.find(root);
-        dfs(preOrder.substr(1,k),inOrder.substr(0,k));
-        dfs(preOrder.substr(k+1,len-k-1),inOrder.substr(k+1,len-k-1));
-        cout << root;
+typedef struct Tree {
+    char ch;
+    struct Tree *left, *right;
+};
+
+Tree* newNode(char ch)
+{
+    Tree *t=(Tree*) malloc(sizeof(Tree));
+    t->ch=ch;
+    t->left=t->right=NULL;
+    return t;
+}
+
+Tree* create()
+{
+    char c;
+    c=getchar();
+    Tree* node=NULL;
+    if (c=='#') {
+        node=NULL;
+    } else {
+        node=newNode(c);
+        node->left=create();
+        node->right=create();
+    }
+    return node;
+}
+
+void preOrder(Tree* root)
+{
+    if (root) {
+        printf("%c ",root->ch);
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+}
+
+void inOrder(Tree* root)
+{
+    if (root) {
+        inOrder(root->left);
+        printf("%c ",root->ch);
+        inOrder(root->right);
+    }
+}
+
+void postOrder(Tree* root)
+{
+    if (root) {
+        postOrder(root->left);
+        postOrder(root->right);
+        printf("%c ",root->ch);
     }
 }
 
 int main()
 {
-    string preOrder,inOrder;
-    cin >> preOrder >> inOrder;
-    dfs(preOrder,inOrder);
+    Tree* root=create();
+    printf("preOrder: ");preOrder(root);printf("\n");
+    printf("inOrder: ");inOrder(root);printf("\n");
+    printf("postOrder: ");postOrder(root);printf("\n");
     return 0;
 }

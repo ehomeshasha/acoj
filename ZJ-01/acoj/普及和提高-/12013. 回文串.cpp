@@ -22,27 +22,18 @@ ahaha
 输出:
 YES
  */
-struct Stack {
-    int head=0;
-    char *str;
-};
 
 int main()
 {
-    char input[105];
-    gets(input);
-    int len=strlen(input);
-//    string s;
-//    Stack st=;
-//    cin >> s;
-//    int l=s.length();
-//    for (int i=0;i<l/2;i++) {
-//        if (s[i]!=s[l-i-1]) {
-//            cout << "NO";
-//            return 0;
-//        }
-//    }
-//    cout << "YES";
-//    return 0;
+    string s;
+    cin >> s;
+    int l=s.length();
+    for (int i=0;i<l/2;i++) {
+        if (s[i]!=s[l-i-1]) {
+            cout << "NO";
+            return 0;
+        }
+    }
+    cout << "YES";
     return 0;
 }

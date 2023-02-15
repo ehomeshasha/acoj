@@ -23,7 +23,7 @@ ahaha
 YES
  */
 struct Stack {
-    int head=0;
+    int head;
     char *str;
 };
 
@@ -32,17 +32,17 @@ int main()
     char input[105];
     gets(input);
     int len=strlen(input);
-//    string s;
-//    Stack st=;
-//    cin >> s;
-//    int l=s.length();
-//    for (int i=0;i<l/2;i++) {
-//        if (s[i]!=s[l-i-1]) {
-//            cout << "NO";
-//            return 0;
-//        }
-//    }
-//    cout << "YES";
-//    return 0;
+    int mid=len/2;
+    Stack st={0, new char[mid]};
+    for (int i=0;i<mid;i++) { // 入栈
+        st.str[st.head++]=input[i];
+    }
+    for (int i=len%2+mid;i<len;i++) { // 出栈检验
+        if (input[i]!=st.str[st.head---1]) {
+            printf("NO");
+            return 0;
+        }
+    }
+    printf("YES");
     return 0;
 }

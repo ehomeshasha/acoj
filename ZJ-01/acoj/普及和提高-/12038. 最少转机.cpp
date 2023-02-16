@@ -28,7 +28,7 @@ s号城市到e号目标城市，需要飞行几次？
 2
  */
 const int N=1000005;
-int n,m,s,e;
+int n,m,s,e,visit[1005];
 vector<int> v1[1005];
 struct Trip {
     int city;
@@ -40,24 +40,10 @@ struct Queue {
     int tail;
     Trip* cities;
 } q{0,0,cities};
-//void enQueue(int city, int step)
-//{
-//    Trip trip{city,step};
-//    q.cities[q.tail]=trip;
-//    q.tail=(q.tail+1)%N;
-//}
 void enQueue(int city, int step)
 {
-    Trip trip{city,step};
-    q.cities[q.tail++]=trip;
-//    q.tail=(q.tail+1)%N;
+    q.cities[q.tail++]=Trip{city,step};
 }
-//Trip deQueue()
-//{
-//    Trip t=q.cities[q.head];
-//    q.head=(q.head+1)%N;
-//    return t;
-//}
 Trip deQueue()
 {
     return q.cities[q.head++];
@@ -72,7 +58,11 @@ void bfs()
             return;
         }
         for (int i=0;i<v1[trip.city].size();i++) { // 遍历所有能到达的城市，压入队列
-            enQueue(v1[trip.city][i], trip.step+1);
+            // 去掉回头路
+            if (visit[v1[trip.city][i]]==0) {
+                visit[v1[trip.city][i]]=1;
+                enQueue(v1[trip.city][i], trip.step+1);
+            }
         }
     }
 }
@@ -89,6 +79,5 @@ int main()
     // bfs遍历
     enQueue(s,0); // 开始城市压入队列
     bfs();
-
     return 0;
 }

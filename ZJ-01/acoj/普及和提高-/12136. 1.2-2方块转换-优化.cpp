@@ -32,7 +32,7 @@ using namespace std;
 3,1 -> 1,1
 3,2 -> 2,1
 3,3 -> 3,1
-sg[x][j][N-i+1]=sg[0][i][j]
+res[j][N-i+1]=grid[i][j]
 2) 转180度 就是2个转90度
 3) 转270度 就是3个转90度
 4) 反射
@@ -45,7 +45,7 @@ sg[x][j][N-i+1]=sg[0][i][j]
 3,1 -> 3,3
 3,2 -> 3,2
 3,3 -> 3,1
-sg[x][i][N-j+1]=sg[0][i][j]
+res[i][N-j+1]=grid[i][j]
 
 5) 组合
 反射+旋转90*n
@@ -63,35 +63,100 @@ sg[x][i][N-j+1]=sg[0][i][j]
 1
  */
 int N;
-char** turn90(char grid[10][10])
+
+char** init_grid()
 {
-    char* (*res)=new char*[N];
-//    for (int i=0;i<N;i++) {
-//        strcpy(res[i],grid[i]);
-//    }
+    char** res=new char*[N];
+    for (int i=0;i<N;i++) {
+        res[i]=new char[N];
+    }
+    return res;
+}
+
+char** turn90(char** grid)
+{
+    char** res=init_grid();
     for (int i=0;i<N;i++) {
         for (int j=0;j<N;j++) {
-            res[i][j]=grid[i][j];
+            res[j][N-i-1]=grid[i][j];
         }
     }
     return res;
+}
+
+char** fanshe(char** grid)
+{
+    char** res=init_grid();
+    for (int i=0;i<N;i++) {
+        for (int j=0;j<N;j++) {
+            res[i][N-j-1]=grid[i][j];
+        }
+    }
+    return res;
+}
+
+void mprint(char** g)
+{
+    for (int i=0;i<N;i++) {
+        for (int j=0;j<N;j++) {
+            printf("%c ",g[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+bool mequal(char** g1, char** g2)
+{
+    for (int i=0;i<N;i++) {
+        for (int j=0;j<N;j++) {
+            if (g1[i][j]!=g2[i][j]) return false;
+        }
+    }
+    return true;
 }
 
 int main()
 {
     // 思路， 提炼算子
     // 本题两个算子， 转90度， 反射
-    char start_grid[10][10],end_grid[10][10],tc[4];
     scanf("%d\n",&N);
+    char tc[4];
+    char** sg=init_grid();
+    char** eg=init_grid();
+    // sg
     for (int i=0;i<N;i++) {
-        for (int j=0;j<N;j++) start_grid[i][j]=getchar();
+        for (int j=0;j<N;j++) sg[i][j]=getchar();
         gets(tc);
     }
+    // eg
     for (int i=0;i<N;i++) {
-        for (int j=0;j<N;j++) end_grid[i][j]=getchar();
+        for (int j=0;j<N;j++) eg[i][j]=getchar();
         gets(tc);
     }
-    char** res=turn90(start_grid);
-
+//    char** res=turn90(sg); // 转90度
+//    char** res=fanshe(sg); // 反射
+//    mprint(sg);
+//    printf("\n");
+//    mprint(res);
+//    printf("\n");
+    // 算子测试通过，开始编写逻辑
+    char** res;
+    res=turn90(sg);
+    if(mequal(res,eg)) {printf("1");return 0;}
+    for (int i=2;i<=3;i++) {
+        res= turn90(res); // 转90度
+        if(mequal(res,eg)) {printf("%d",i);return 0;}
+    }
+    // 反射
+    res=fanshe(sg);
+    if(mequal(res,eg)) {printf("4");return 0;}
+    // 组合1 反射+转90、180、270
+    for (int i=1;i<=3;i++) {
+        res=turn90(res); // 转3次，每转1次就判断一下是否相等
+        if(mequal(res,eg)) {printf("5");return 0;}
+    }
+    // 判断是否不用转
+    if (mequal(eg,sg)) {printf("6");return 0;}
+    printf("7");
     return 0;
 }

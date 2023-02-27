@@ -74,9 +74,7 @@ void trace(int step, string &s)
 int main()
 {
     cin >> N;
-
     string s;
     trace(0,s);
-
     return 0;
 }

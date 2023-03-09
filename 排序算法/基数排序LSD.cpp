@@ -42,6 +42,10 @@ void radixSort(int* a, int n) {
             count[j] = count[j] + count[j-1]; // 把值就转换成了打平的初始index
             // count[0] = 1, count[1] = 2, count[3] = 2, count[4] = 5
         }
+        // 如果需要降序的话改成下面的
+//        for (int j=9;j>=1;j--) {
+//            count[j-1]=count[j-1]+count[j];
+//        }
         // 从后往前回填
         for (int j = n - 1; j >= 0; j--) {
             int sw = a[j] / radix % 10;

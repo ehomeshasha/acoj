@@ -53,7 +53,6 @@ int main()
 {
     cin>>L>>N>>M;//读入
     for(int i=1;i<=N;i++)  cin>>d[i];
-
     int l=1,r=L;//二分
     while(l<=r) {
         int mid=(l+r)>>1;

@@ -13,6 +13,11 @@ add_executable(P1177-2 "luogu/题单/能力全面提升综合题单/Part 2 基�
 add_executable(P1177-3 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.2 排序算法/P1177快速排序/P1177快速排序-两路快排-标准写法.cpp")
 add_executable(P1177-4 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.2 排序算法/P1177快速排序/P1177快速排序-三路快排.cpp")
 add_executable(P1024 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P1024一元三次方程求解/P1024一元三次方程.cpp")
+add_executable(P2678 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P2678跳石头/P2678跳石头.cpp")
+add_executable(P1902 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P1902刺杀大使/P1902刺杀大使.cpp")
+add_executable(P1902-2 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P1902刺杀大使/P1902刺杀大使-最小生成树解法.cpp")
+add_executable(P1314 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P1314聪明的质检员/P1314聪明的质检员.cpp")
+add_executable(P1083 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P1083借教室/P1083借教室.cpp")
 
 
 #排序算法

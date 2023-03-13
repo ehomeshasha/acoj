@@ -18,6 +18,15 @@ add_executable(P1902 "luogu/题单/能力全面提升综合题单/Part 2 基础�
 add_executable(P1902-2 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P1902刺杀大使/P1902刺杀大使-最小生成树解法.cpp")
 add_executable(P1314 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P1314聪明的质检员/P1314聪明的质检员.cpp")
 add_executable(P1083 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P1083借教室/P1083借教室.cpp")
+add_executable(P4343 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.3 二分答案/P4343自动刷题机/P4343自动刷题机.cpp")
+add_executable(P1226 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.4 分治/P1226快速幂取余运算/P1226快速幂取余运算.cpp")
+add_executable(P1010 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.4 分治/P1010幂次方/P1010幂次方.cpp")
+add_executable(P1429 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.4 分治/P1429平面最近点对/P1429平面最近点对.cpp")
+add_executable(P3612 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.4 分治/P3612奶牛密码/P3612奶牛密码.cpp")
+add_executable(P1208 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P1208混合牛奶/P1208混合牛奶.cpp")
+add_executable(P4995 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P4995跳跳/P4995跳跳.cpp")
+
+
 
 
 #排序算法

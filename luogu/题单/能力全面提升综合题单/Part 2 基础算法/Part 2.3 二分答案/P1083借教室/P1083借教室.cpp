@@ -74,9 +74,9 @@ int main()
 //    printf("0");
 
     // 差分数据（前缀和的逆运算）+二分
-    scanf("%d %d",&N,&M);
-    for (int i=1;i<=N;i++) scanf("%d", &tot[i]);
-    for (int i=1;i<=M;i++) scanf("%d %d %d",&d[i],&s[i],&t[i]);
+    scanf("%lld %lld",&N,&M);
+    for (int i=1;i<=N;i++) scanf("%lld", &tot[i]);
+    for (int i=1;i<=M;i++) scanf("%lld %lld %lld",&d[i],&s[i],&t[i]);
     // 二分答案
     int l=1,r=M;
     while(l<=r) {
@@ -88,6 +88,6 @@ int main()
         }
     }
     if (ans==0) printf("0");
-    else printf("-1\n%d", ans);
+    else printf("-1\n%lld", ans);
     return 0;
 }

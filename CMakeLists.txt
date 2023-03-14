@@ -25,6 +25,7 @@ add_executable(P1429 "luogu/题单/能力全面提升综合题单/Part 2 基础�
 add_executable(P3612 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.4 分治/P3612奶牛密码/P3612奶牛密码.cpp")
 add_executable(P1208 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P1208混合牛奶/P1208混合牛奶.cpp")
 add_executable(P4995 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P4995跳跳/P4995跳跳.cpp")
+add_executable(P1094 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P1094纪念品分组/P1094纪念品分组.cpp")
 
 
 

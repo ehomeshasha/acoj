@@ -128,10 +128,12 @@ Result mdivide2(string sa, string sb)
 
 int main()
 {
+//    freopen("/Users/shaluo/CLionProjects/acoj/luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.7 高精度/P1480高精度除法/P1480_5.in", "r", stdin);
+//    freopen("/Users/shaluo/CLionProjects/acoj/luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.7 高精度/P1480高精度除法/my.out", "w", stdout);
     string sa,sb;
     cin >> sa >> sb;
     Result res=mdivide2(sa,sb);
-    cout << res.shang << endl;
+    cout << res.shang;
 //    cout << res.yushu << endl;
     return 0;
 }

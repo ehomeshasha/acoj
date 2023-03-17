@@ -26,6 +26,17 @@ add_executable(P3612 "luogu/题单/能力全面提升综合题单/Part 2 基础�
 add_executable(P1208 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P1208混合牛奶/P1208混合牛奶.cpp")
 add_executable(P4995 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P4995跳跳/P4995跳跳.cpp")
 add_executable(P1094 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P1094纪念品分组/P1094纪念品分组.cpp")
+add_executable(P1199 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P1199三国游戏/P1199三国游戏.cpp")
+add_executable(P2672 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P2672推销员/P2672推销员.cpp")
+add_executable(P1080 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P1080国王游戏/P1080国王游戏TODO.cpp")
+add_executable(P2123 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.5 贪心/P2123皇后游戏/P2123皇后游戏.cpp")
+add_executable(P1932 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.7 高精度/P1932高精度全套/P1932高精度全套.cpp")
+add_executable(P1601 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.7 高精度/P1601高精度加法/P1601高精度加法.cpp")
+add_executable(P2142 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.7 高精度/P2142高精度减法/P2142高精度减法.cpp")
+add_executable(P1303 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.7 高精度/P1303高精度乘法/P1303高精度乘法.cpp")
+add_executable(P1480 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.7 高精度/P1480高精度除法/P1480高精度除法.cpp")
+add_executable(P3131 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P3131求区间和/P3131求区间和.cpp")
+add_executable(P1387 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P1387最大正方形/P1387最大正方形.cpp")
 
 
 

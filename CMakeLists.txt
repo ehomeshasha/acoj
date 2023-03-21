@@ -37,6 +37,9 @@ add_executable(P1303 "luogu/题单/能力全面提升综合题单/Part 2 基础�
 add_executable(P1480 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.7 高精度/P1480高精度除法/P1480高精度除法.cpp")
 add_executable(P3131 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P3131求区间和/P3131求区间和.cpp")
 add_executable(P1387 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P1387最大正方形/P1387最大正方形.cpp")
+add_executable(P3397 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P3397地毯/P3397地毯.cpp")
+add_executable(P3397-2 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P3397地毯/P3397地毯-二维差分.cpp")
+add_executable(P2280 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P2280激光炸弹/P2280激光炸弹.cpp")
 
 
 

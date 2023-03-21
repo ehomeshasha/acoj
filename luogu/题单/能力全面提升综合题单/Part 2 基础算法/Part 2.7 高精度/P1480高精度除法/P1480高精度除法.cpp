@@ -7,18 +7,18 @@ https://www.luogu.com.cn/problem/P1480
 高精度/低精度 逐位求商法
 高精度/高精度 减法模拟除法
  */
+int a[5005],b[5005],c[10005];
 struct Result {
     string shang,yushu;
 };
 
 // 高精度/低精度 逐位试商法
 #define int long long
+int c2[10005];
 Result mdivide1(string &sa, string &sb)
 {
     // a高精度，b低精度
     int la=sa.length();
-    int* a=(int*) malloc(la*sizeof(int));
-    int* c=(int*) malloc(la*sizeof(int));
     int b=stoi(sb);
     for (int i=0;i<la;i++) a[i]=sa[i]-'0';
     // 逐位试商
@@ -31,14 +31,14 @@ Result mdivide1(string &sa, string &sb)
         // 不够除 c[i]=0;余数 yushu=a[0]%b;
         // i=1
         // 判断(yushu*10+a[1])/b
-        c[i]=(yushu*10+a[i])/b;
+        c2[i]=(yushu*10+a[i])/b;
         yushu=(yushu*10+a[i])%b;
     }
     string shang;
     int lc=0;
-    while(c[lc]==0&&lc<la-1) lc++;
+    while(c2[lc]==0&&lc<la-1) lc++;
     for (int i=lc;i<la;i++) {
-        shang+=c[i]+'0';
+        shang+=c2[i]+'0';
     }
     string ys=to_string(yushu);
     return Result{shang,ys};
@@ -46,14 +46,8 @@ Result mdivide1(string &sa, string &sb)
 #undef int
 
 
-string msub(const string &sa, const string &sb, bool nagetive)
+string msubb(const int* a, const int* b, int* c, int maxl, bool nagetive)
 {
-    int la=sa.length(),lb=sb.length(),maxl=max(la,lb);
-    int* a=(int*)malloc(maxl*sizeof(int));
-    int* b=(int*)malloc(maxl*sizeof(int));
-    int* c=(int*)malloc((maxl+1)*sizeof(int));
-    for (int i=0;i<la;i++) a[la-i-1]=sa[i]-'0';
-    for (int i=0;i<lb;i++) b[lb-i-1]=sb[i]-'0';
     for (int i=0;i<maxl;i++) { // 对所有位数进行处理, 递推算法，从个位开始递推
         c[i]+=a[i]-b[i]+10;
         c[i+1]=c[i]/10-1;
@@ -69,24 +63,31 @@ string msub(const string &sa, const string &sb, bool nagetive)
     }
     return sc;
 }
-
 bool compare(const string &sa, const string &sb)
 {
     // 更简单的写法
     int la=sa.length(),lb=sb.length();
     if (la!=lb) return la>lb;
     return sa>=sb;
-//    int la=sa.length(),lb=sb.length(),maxl=max(la,lb);
-//    int* a=(int*)malloc(maxl*sizeof(int));
-//    int* b=(int*)malloc(maxl*sizeof(int));
-//    for (int i=0;i<la;i++) a[la-i-1]=sa[i]-'0';
-//    for (int i=0;i<lb;i++) b[lb-i-1]=sb[i]-'0';
-//    if (la!=lb) return la>lb;
-//    for (int i=maxl-1;i>=0;i--) { // 从高位开始比，如果a的高位比b的高位小，那么返回false，即a<b
-//        if (a[i]<b[i]) return false;
-//    }
-//    return true; // a>=b
 }
+string msub(string &sa, string &sb)
+{
+    int la=sa.length(),lb=sb.length(),maxl=max(la,lb);
+    memset(a,0,sizeof(a));
+    memset(b,0,sizeof(b));
+    memset(c,0,sizeof(c));
+    for (int i=0;i<la;i++) a[la-i-1]=sa[i]-'0';
+    for (int i=0;i<lb;i++) b[lb-i-1]=sb[i]-'0';
+    string sc;
+    if (compare(sa,sb)) {
+        sc=msubb(a,b,c,maxl,false);
+    } else {
+        sc=msubb(b,a,c,maxl,true);
+    }
+    return sc;
+}
+
+
 
 
 // 高精度/高精度 减法模拟除法
@@ -108,7 +109,7 @@ Result mdivide2(string sa, string sb)
     while (diffl>=0) {
         int cnt1=0;
         while(compare(sa,sb)) {
-            string sc=msub(sa,sb,false);
+            string sc=msub(sa,sb);
             sa=sc;
             cnt1++;
         }

@@ -4,13 +4,14 @@ using namespace std;
 /**
 https://www.luogu.com.cn/problem/P1601
  */
+int a[505],b[505],c[505];
 
 string madd(string &sa, string &sb)
 {
     int la=sa.length(),lb=sb.length(),maxl=max(la,lb);
-    int* a=(int*)malloc(maxl*sizeof(int));
-    int* b=(int*)malloc(maxl*sizeof(int));
-    int* c=(int*)malloc((maxl+1)*sizeof(int));
+    memset(a,0,sizeof(a));
+    memset(b,0,sizeof(b));
+    memset(c,0,sizeof(c));
     for (int i=0;i<la;i++) a[la-i-1]=sa[i]-'0';
     for (int i=0;i<lb;i++) b[lb-i-1]=sb[i]-'0';
     // 第一位个位，以此类推

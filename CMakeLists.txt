@@ -40,6 +40,7 @@ add_executable(P1387 "luogu/题单/能力全面提升综合题单/Part 2 基础�
 add_executable(P3397 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P3397地毯/P3397地毯.cpp")
 add_executable(P3397-2 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P3397地毯/P3397地毯-二维差分.cpp")
 add_executable(P2280 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P2280激光炸弹/P2280激光炸弹.cpp")
+add_executable(P4552 "luogu/题单/能力全面提升综合题单/Part 2 基础算法/Part 2.8 前缀和差分数组/P4552数列增减/P4552数列增减.cpp")
 
 
 

@@ -52,6 +52,7 @@ add_executable(P1162-2 "luogu/题单/能力全面提升综合题单/Part3 搜索
 add_executable(P1162-3 "luogu/题单/能力全面提升综合题单/Part3 搜索/Part 3.2 广度优先搜索/P1162 填涂颜色/P1162 填涂颜色-并查集.cpp")
 add_executable(P1443 "luogu/题单/能力全面提升综合题单/Part3 搜索/Part 3.2 广度优先搜索/P1443 马的遍历/P1443 马的遍历.cpp")
 add_executable(P3956 "luogu/题单/能力全面提升综合题单/Part3 搜索/Part 3.2 广度优先搜索/P3956 棋盘/P3956 棋盘-MBFS题解.cpp")
+add_executable(P1126 "luogu/题单/能力全面提升综合题单/Part3 搜索/Part 3.2 广度优先搜索/P1126 机器人搬重物/P1126 机器人搬重物-MBFS.cpp")
 
 
 

@@ -4,7 +4,7 @@ using namespace std;
 /**
 https://www.luogu.com.cn/problem/P3956
  */
-const int INF=0x7f7f7f7f;
+const int INF=0x3f3f3f3f;
 struct Pos {
     int x,y,v,gold;
 };
